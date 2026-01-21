@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArcByte Platform</title>
+<link rel="icon" href="./logos/favicon.png" type="image/x-icon">
+
+<style>
+:root {
+    --bg: #ffffff;
+    --text: #111;
+    --muted: #666;
+    --hover: #f3f3f3;
+    --active: #E0E0E0;
+    --sidebar-bg: #F2F2F2;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Inter, system-ui, sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ================= Sidebar ================= */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 240px;
+    padding: 20px 16px;
+    background: var(--sidebar-bg);
+    border-radius: 0 30px 30px 0;
+    transition: width .25s ease;
+}
+
+.sidebar.collapsed {
+    width: 72px;
+}
+
+.sidebar-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding-left: 8px;
+    margin-bottom: 28px;
+}
+
+.logo-text {
+    font-size: 21px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: opacity .2s ease;
+}
+
+.toggle {
+    position: absolute;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Hide logo text */
+.sidebar.collapsed .logo-text {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Hide subtitles fully */
+.subtitle-text {
+    font-size: 16px;
+    padding-left: 8px;
+    margin: 28px 0 10px;
+    font-weight: 500;
+    transition: all .2s ease;
+}
+
+.sidebar.collapsed .subtitle-text {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* ================= Nav ================= */
+.nav a {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    text-decoration: none;
+    color: var(--text);
+    border-radius: 12px;
+    transition: background .15s ease;
+}
+
+.nav a:hover { background: var(--hover); }
+.nav a.active { background: var(--active); }
+
+.sidebar.collapsed .nav span {
+    display: none;
+}
+
+.sidebar.collapsed .nav a {
+    justify-content: center;
+}
+
+/* Centre toggle when collapsed */
+.sidebar.collapsed .toggle {
+    right: 50%;
+    transform: translateX(50%);
+}
+
+/* ================= Main ================= */
+.main {
+    margin-left: 240px;
+    transition: margin-left .25s ease;
+}
+
+.sidebar.collapsed ~ .main {
+    margin-left: 72px;
+}
+
+/* ================= Login Pill ================= */
+.login-pill {
+    position: fixed;
+    top: 24px;
+    right: 32px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none;
+    transition: opacity .2s ease;
+    z-index: 10;
+}
+
+.login-pill:hover {
+    opacity: 0.85;
+}
+
+/* ================= Hero ================= */
+.hero {
+    text-align: center;
+    padding: 120px 24px 80px;
+}
+
+.typing-title {
+    font-size: 56px;
+    font-weight: 700;
+    height: 70px;          /* Prevent layout shift */
+    min-width: 360px;
+    margin: 0 auto 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 4px solid #111;
+}
+
+.hero-subtitle {
+    font-size: 18px;
+    color: var(--muted);
+}
+
+/* ================= News ================= */
+.news-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 80px 80px;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 56px 48px;
+}
+
+.news-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-image {
+    aspect-ratio: 1 / 1;
+    border-radius: 22px;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-text h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.card-meta {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 900px) {
+    .news-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .news-wrapper { padding: 24px; }
+    .news-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<a href="https://accounts.arcbytecn.com" class="login-pill">Login</a>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo-text">ArcByte Platform</div>
+        <button class="toggle" onclick="toggleSidebar()">☰</button>
+    </div>
+    <div class="subtitle-text">General</div>
+    <nav class="nav">
+        <a href="http://platform.arcbytecn.com" class="active"><span>Home</span></a>
+        <a href="#"><span>Statistics</span></a>
+        <a href="#"><span>Help</span></a>
+    </nav>
+    <div class="subtitle-text">Developer</div>
+    <nav class="nav">
+        <a href="#"><span>API Port</span></a>
+        <a href="#"><span>Request Tokens</span></a>
+        <a href="#"><span>Accounts</span></a>
+        <a href="#"><span>Optimize</span></a>
+        <a href="#"><span>Voice Features</span></a>
+        <a href="#"><span>Payment & Billing</span></a>
+    </nav>
+    <div class="subtitle-text">Models</div>
+    <nav class="nav">
+        <a href="#"><span>ArcAI-Emerald-1.0b</span></a>
+        <a href="#"><span>ArcAI-Emerald-1.0c</span></a>
+        <a href="#"><span>ArcAI-Emerald-1.1</span></a>
+        <a href="#"><span>ArcAI-Emerald-2.0</span></a>
+    </nav>
+    <div class="subtitle-text">Other</div>
+    <nav class="nav">
+        <a href="https://status.arcbytecn.com"><span>Status</span></a>
+        <a href="#"><span>Settings</span></a>
+        <a href="https://accounts.arcbytecn.com"><span>Account</span></a>
+    </nav>
+</aside>
+
+<main class="main">
+
+    <section class="hero">
+        <div class="typing-title" id="typing-title"></div>
+        <div class="hero-subtitle">
+            Building intelligent systems for a smarter future
+        </div>
+    </section>
+
+    <section class="news-wrapper">
+        <div class="news-grid">
+            <article class="news-card">
+                <div class="card-image"><img src="images/1.png"></div>
+                <div class="card-text">
+                    <h3>Introducing ArcByte Education for Countries</h3>
+                    <div class="card-meta">Global Affairs · Jan 21, 2026</div>
+                </div>
+            </article>
+            <article class="news-card">
+                <div class="card-image"><img src="images/2.png"></div>
+                <div class="card-text">
+                    <h3>Introducing ArcByte Education for Countries</h3>
+                    <div class="card-meta">Global Affairs · Jan 21, 2026</div>
+                </div>
+            </article>
+            <article class="news-card">
+                <div class="card-image"><img src="images/1.png"></div>
+                <div class="card-text">
+                    <h3>Introducing ArcByte Education for Countries</h3>
+                    <div class="card-meta">Global Affairs · Jan 21, 2026</div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+</main>
+
+<script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
+/* Typing Effect */
+const words = ["We do.", "We love.", "We build.", "We innovate."];
+let wordIndex = 0;
+let charIndex = 0;
+let deleting = false;
+const title = document.getElementById("typing-title");
+
+function typeLoop() {
+    const word = words[wordIndex];
+
+    if (!deleting) {
+        title.textContent = word.slice(0, ++charIndex);
+        if (charIndex === word.length) {
+            setTimeout(() => deleting = true, 1200);
+        }
+    } else {
+        title.textContent = word.slice(0, --charIndex);
+        if (charIndex === 0) {
+            deleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+        }
+    }
+    setTimeout(typeLoop, deleting ? 70 : 120);
+}
+
+typeLoop();
+</script>
+
+</body>
+</html>
